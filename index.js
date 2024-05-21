@@ -54,48 +54,33 @@ app.use(cors({
     origin: 'http://localhost:3000' // Mengizinkan permintaan dari asal ini
 }));
 
-// Menganalisis permintaan JSON yang masuk
 app.use(express.json());
-
-// Mendaftarkan rute peran
 app.use(roleRoute);
-
-// Mendaftarkan rute pengguna
 app.use(userRoute);
-
-// Mendaftarkan rute produk
 app.use(productRoute);
-
-// Mendaftarkan rute transaksi inventaris
 app.use(inventoryTransactionRoute);
-
-// Mendaftarkan rute pelanggan
 app.use(customerRoute);
-
-// Mendaftarkan rute pesanan
 app.use(orderRoute);
-
-// Mendaftarkan rute detail pesanan
 app.use(orderDetailRoute);
-
-// Mendaftarkan rute pemasok
 app.use(supplierRoute);
-
-// Mendaftarkan rute pembelian
 app.use(purchaseRoute);
-
-// Mendaftarkan rute detail pembelian
 app.use(purchaseDetailRoute);
-
-// Mendaftarkan rute otentikasi
 app.use(authRoute);
 
-// Define route handler for root route
 app.get('/', (req, res) => {
-    res.send('Hello, world!'); // Send a response when accessing the root route
+    res.send('Hello, world!');
 });
 
-// Memulai server dan mendengarkan pada port yang ditentukan
-app.listen(process.env.APP_PORT, ()=> {
-    console.log('Server up and running...');
+db.sync({ force: true }).then(async () => {
+    console.log('Tabel berhasil dibuat.');
+    
+    // Panggil kedua seeder sebelum server dimulai
+    await seedRoles();
+    await seedUsers();
+
+    app.listen(process.env.APP_PORT, () => {
+        console.log('Server up and running...');
+    });
+}).catch(err => {
+    console.error('Gagal membuat tabel:', err);
 });
