@@ -3,38 +3,33 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Products = db.define('products', {
-    productId: {
+const Suppliers = db.define('suppliers', {
+    supplierId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    productName: {
+    supplierName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true
         }
     },
-    productDescription: {
-        type: DataTypes.TEXT
-    },
-    productPrice: {
-        type: DataTypes.DECIMAL(10,2),
+    supplierEmail: {
+        type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
-            notEmpty: true
+            notEmpty: true,
+            isEmail: true
         }
     },
-    productStock: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
+    supplierPhone: {
+        type: DataTypes.STRING(20)
     }
 }, {
     freezeTableName: true
 });
 
-export default Products;
+export default Suppliers;
