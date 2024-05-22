@@ -13,16 +13,24 @@ const Suppliers = db.define('suppliers', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Nama supplier tidak boleh kosong."
+            }
         }
     },
     supplierEmail: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+            msg: "Email supplier sudah digunakan."
+        },
         validate: {
-            notEmpty: true,
-            isEmail: true
+            notEmpty: {
+                msg: "Email supplier tidak boleh kosong."
+            },
+            isEmail: {
+                msg: "Email tidak valid."
+            }
         }
     },
     supplierPhone: {
@@ -30,6 +38,16 @@ const Suppliers = db.define('suppliers', {
     }
 }, {
     freezeTableName: true
+});
+
+// Tambahkan hook beforeValidate
+Suppliers.beforeValidate((supplier, options) => {
+    console.log("Memvalidasi data supplier...");
+});
+
+// Tambahkan hook afterValidate
+Suppliers.afterValidate((supplier, options) => {
+    console.log("Validasi data supplier selesai.");
 });
 
 export default Suppliers;

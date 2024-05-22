@@ -16,22 +16,54 @@ const InventoryTransactions = db.define('inventoryTransactions', {
         references: {
             model: Products,
             key: 'productId'
+        },
+        validate: {
+            notNull: {
+                msg: "Product ID tidak boleh kosong."
+            }
         }
     },
     transactionDate: {
         type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        validate: {
+            notNull: {
+                msg: "Tanggal transaksi tidak boleh kosong."
+            }
+        }
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Kuantitas tidak boleh kosong."
+            }
+        }
     },
     transactionType: {
         type: DataTypes.ENUM('IN', 'OUT'),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Jenis transaksi tidak boleh kosong."
+            },
+            isIn: {
+                args: [['IN', 'OUT']],
+                msg: "Jenis transaksi harus IN atau OUT."
+            }
+        }
     }
 }, {
     freezeTableName: true
+});
+
+InventoryTransactions.addHook("beforeValidate", (transaction, options) => {
+    console.log("Memvalidasi data transaksi inventaris...");
+});
+
+InventoryTransactions.addHook("afterValidate", (transaction, options) => {
+    console.log("Validasi data transaksi inventaris selesai.");
 });
 
 export default InventoryTransactions;

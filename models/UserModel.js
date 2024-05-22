@@ -11,41 +11,66 @@ const Users = db.define('users', {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "UUID tidak boleh kosong."
+            }
         }
     },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true,
-            len: [3, 100]
+            notEmpty: {
+                msg: "Nama tidak boleh kosong."
+            },
+            len: {
+                args: [3, 100],
+                msg: "Nama harus terdiri dari 3 hingga 100 karakter."
+            }
         }
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true,
-            isEmail: true
+            notEmpty: {
+                msg: "Email tidak boleh kosong."
+            },
+            isEmail: {
+                msg: "Email tidak valid."
+            }
         }
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Password tidak boleh kosong."
+            }
         }
     },
     roleId: { // Nama kolom untuk ID peran
         type: DataTypes.INTEGER, // Menggunakan tipe data INTEGER untuk kunci asing
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Role ID tidak boleh kosong."
+            }
         }
     }
 }, {
     freezeTableName: true // Menetapkan nama tabel menjadi "users" tanpa mengubahnya
+});
+
+// Tambahkan hook beforeValidate
+Users.beforeValidate((user, options) => {
+    console.log("Memvalidasi data pengguna...");
+});
+
+// Tambahkan hook afterValidate
+Users.afterValidate((user, options) => {
+    console.log("Validasi data pengguna selesai.");
 });
 
 // Definisi relasi many-to-one antara Users dan Roles
