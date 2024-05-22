@@ -27,9 +27,7 @@ const InventoryTransactions = db.define('inventoryTransactions', {
         type: DataTypes.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         validate: {
-            notNull: {
-                msg: "Tanggal transaksi tidak boleh kosong."
-            }
+        allowNull: true,
         }
     },
     quantity: {
