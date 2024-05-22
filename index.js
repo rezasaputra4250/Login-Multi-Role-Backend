@@ -1,24 +1,3 @@
-import express from "express";
-import cors from "cors";
-import session from "express-session";
-import dotenv from "dotenv";
-import db from "./config/Database.js";
-import SequelizeStore from "connect-session-sequelize";
-import roleRoute from "./routes/RoleRoute.js";
-import userRoute from "./routes/UserRoute.js";
-import productRoute from "./routes/ProductRoute.js";
-import inventoryTransactionRoute from "./routes/InventoryTransactionRoute.js";
-import customerRoute from "./routes/CustomerRoute.js";
-import orderRoute from "./routes/OrderRoute.js";
-import orderDetailRoute from "./routes/OrderDetailRoute.js";
-import supplierRoute from "./routes/SupplierRoute.js";
-import purchaseRoute from "./routes/PurchaseRoute.js";
-import purchaseDetailRoute from "./routes/PurchaseDetailRoute.js";
-import authRoute from "./routes/AuthRoute.js";
-import seedUsers from "./seeders/UserSeeder.js";
-import seedRoles from "./seeders/RoleSeeder.js";
-
-
 dotenv.config();
 
 const app = express();
@@ -43,6 +22,11 @@ app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5173'
+}));
+
 app.use(express.json());
 app.use(roleRoute);
 app.use(userRoute);
@@ -65,11 +49,15 @@ db.sync({ force: true }).then(async () => {
 
     try {
         // Panggil fungsi seedUsers dan seedRoles sebelum server dimulai
+        console.log('Menjalankan Seeder Roles...');
         await seedRoles();
+        console.log('Seeder Roles selesai.');
+        console.log('Menjalankan Seeder Users...');
         await seedUsers();
+        console.log('Seeder Users selesai.');
 
         app.listen(process.env.APP_PORT, () => {
-            console.log('Server up and running...');
+            console.log(`Server up and running on port ${process.env.APP_PORT}`);
         });
     } catch (error) {
         console.error('Gagal menjalankan seeder:', error);
