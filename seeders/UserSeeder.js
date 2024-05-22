@@ -7,17 +7,57 @@ const seedUsers = async () => {
     // Array of user data
     const users = [
       {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        password: await argon2.hash("password1"), // Menghash password menggunakan Argon2
+        name: "Zaelani",
+        email: "zaelani@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
         roleId: 1, // Ganti dengan roleId yang sesuai
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: "Jane Doe",
-        email: "jane.doe@example.com",
-        password: await argon2.hash("password2"), // Menghash password menggunakan Argon2
+        name: "Dewi Nur Hapidah",
+        email: "dewinurhapidah@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
+        roleId: 1, // Ganti dengan roleId yang sesuai
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Reza Saputra",
+        email: "rezasaputra@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
+        roleId: 2, // Ganti dengan roleId yang sesuai
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Roni Saputra",
+        email: "ronisaputra@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
+        roleId: 2, // Ganti dengan roleId yang sesuai
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Muhammad Rendi Saputra",
+        email: "muhammadrendisaputra@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
+        roleId: 2, // Ganti dengan roleId yang sesuai
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Dela Rahma Saputri",
+        email: "delrahmasaputri@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
+        roleId: 2, // Ganti dengan roleId yang sesuai
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Adinda Ristiara Saputri",
+        email: "adindaristiarasaputri@example.com",
+        password: await argon2.hash("password"), // Menghash password menggunakan Argon2
         roleId: 2, // Ganti dengan roleId yang sesuai
         createdAt: new Date(),
         updatedAt: new Date()
@@ -33,5 +73,6 @@ const seedUsers = async () => {
     console.error("Seeder untuk pengguna gagal dijalankan:", error); // Menampilkan pesan kesalahan jika seeder gagal dijalankan
   }
 };
+// Menambahkan data peran ke dalam database
 
 export default seedUsers;
