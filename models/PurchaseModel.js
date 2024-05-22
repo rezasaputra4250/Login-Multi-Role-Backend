@@ -16,6 +16,11 @@ const Purchases = db.define('purchases', {
         references: {
             model: Suppliers,
             key: 'supplierId'
+        },
+        validate: {
+            notNull: {
+                msg: "Supplier ID tidak boleh kosong."
+            }
         }
     },
     purchaseDate: {
@@ -24,10 +29,25 @@ const Purchases = db.define('purchases', {
     },
     totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Total Amount tidak boleh kosong."
+            }
+        }
     }
 }, {
     freezeTableName: true
+});
+
+// Tambahkan hook beforeValidate
+Purchases.beforeValidate((purchase, options) => {
+    console.log("Memvalidasi data pembelian...");
+});
+
+// Tambahkan hook afterValidate
+Purchases.afterValidate((purchase, options) => {
+    console.log("Validasi data pembelian selesai.");
 });
 
 export default Purchases;

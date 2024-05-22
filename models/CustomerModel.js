@@ -13,16 +13,24 @@ const Customers = db.define('customers', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Nama pelanggan tidak boleh kosong."
+            }
         }
     },
     customerEmail: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+            msg: "Email sudah digunakan."
+        },
         validate: {
-            notEmpty: true,
-            isEmail: true
+            notEmpty: {
+                msg: "Email tidak boleh kosong."
+            },
+            isEmail: {
+                msg: "Email tidak valid."
+            }
         }
     },
     customerPhone: {
@@ -30,6 +38,14 @@ const Customers = db.define('customers', {
     }
 }, {
     freezeTableName: true
+});
+
+Customers.addHook("beforeValidate", (customer, options) => {
+    console.log("Memvalidasi data pelanggan...");
+});
+
+Customers.addHook("afterValidate", (customer, options) => {
+    console.log("Validasi data pelanggan selesai.");
 });
 
 export default Customers;

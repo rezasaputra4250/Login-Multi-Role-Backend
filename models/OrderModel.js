@@ -16,6 +16,11 @@ const Orders = db.define('orders', {
         references: {
             model: Customers,
             key: 'customerId'
+        },
+        validate: {
+            notNull: {
+                msg: "Customer ID tidak boleh kosong."
+            }
         }
     },
     orderDate: {
@@ -24,10 +29,25 @@ const Orders = db.define('orders', {
     },
     totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Total Amount tidak boleh kosong."
+            }
+        }
     }
 }, {
     freezeTableName: true
+});
+
+// Tambahkan hook beforeValidate
+Orders.beforeValidate((order, options) => {
+    console.log("Memvalidasi data pesanan...");
+});
+
+// Tambahkan hook afterValidate
+Orders.afterValidate((order, options) => {
+    console.log("Validasi data pesanan selesai.");
 });
 
 export default Orders;

@@ -17,6 +17,11 @@ const OrderDetails = db.define('orderDetails', {
         references: {
             model: Orders,
             key: 'orderId'
+        },
+        validate: {
+            notNull: {
+                msg: "Order ID tidak boleh kosong."
+            }
         }
     },
     productId: {
@@ -25,18 +30,43 @@ const OrderDetails = db.define('orderDetails', {
         references: {
             model: Products,
             key: 'productId'
+        },
+        validate: {
+            notNull: {
+                msg: "Product ID tidak boleh kosong."
+            }
         }
     },
     quantity: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Kuantitas tidak boleh kosong."
+            }
+        }
     },
     price: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notNull: {
+                msg: "Harga tidak boleh kosong."
+            }
+        }
     }
 }, {
     freezeTableName: true
+});
+
+// Tambahkan hook beforeValidate
+OrderDetails.beforeValidate((orderDetail, options) => {
+    console.log("Memvalidasi data detail pesanan...");
+});
+
+// Tambahkan hook afterValidate
+OrderDetails.afterValidate((orderDetail, options) => {
+    console.log("Validasi data detail pesanan selesai.");
 });
 
 export default OrderDetails;

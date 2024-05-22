@@ -13,7 +13,9 @@ const Products = db.define('products', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Nama produk tidak boleh kosong."
+            }
         }
     },
     productDescription: {
@@ -23,18 +25,32 @@ const Products = db.define('products', {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Harga produk tidak boleh kosong."
+            }
         }
     },
     productStock: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Stok produk tidak boleh kosong."
+            }
         }
     }
 }, {
     freezeTableName: true
+});
+
+// Tambahkan hook beforeValidate
+Products.beforeValidate((product, options) => {
+    console.log("Memvalidasi data produk...");
+});
+
+// Tambahkan hook afterValidate
+Products.afterValidate((product, options) => {
+    console.log("Validasi data produk selesai.");
 });
 
 export default Products;

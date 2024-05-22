@@ -14,11 +14,23 @@ const Role = db.define('roles', {
         allowNull: false,
         unique: true,
         validate: {
-            notEmpty: true
+            notEmpty: {
+                msg: "Role name tidak boleh kosong."
+            }
         }
     }
 }, {
     freezeTableName: true
+});
+
+// Tambahkan hook beforeValidate
+Role.beforeValidate((role, options) => {
+    console.log("Memvalidasi data role...");
+});
+
+// Tambahkan hook afterValidate
+Role.afterValidate((role, options) => {
+    console.log("Validasi data role selesai.");
 });
 
 export default Role;
