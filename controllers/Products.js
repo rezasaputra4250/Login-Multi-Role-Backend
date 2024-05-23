@@ -4,11 +4,14 @@ import Products from "../models/ProductModel.js";
 export const getProducts = async (req, res) => {
     try {
         const products = await Products.findAll();
+        console.log("Produk berhasil diambil:", products); // Tambahkan console log di sini
         res.status(200).json(products);
     } catch (error) {
+        console.error("Error saat mengambil produk:", error.message); // Tambahkan console log di sini
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // Mendapatkan produk berdasarkan ID
 export const getProductById = async (req, res) => {

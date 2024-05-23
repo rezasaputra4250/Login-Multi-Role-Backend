@@ -61,12 +61,7 @@ app.use(session({
 console.log('Mengaktifkan CORS...');
 app.use(cors({
     credentials: true, // Menyertakan cookie dalam permintaan CORS
-    origin: 'http://localhost:3000' // Mengizinkan permintaan dari asal ini
-}));
-// Mengaktifkan CORS dengan opsi
-app.use(cors({
-    credentials: true, // Menyertakan cookie dalam permintaan CORS
-    origin: 'http://localhost:5173' // Mengizinkan permintaan dari asal ini
+    origin: ['http://localhost:3000','http://localhost:5173'] // Mengizinkan permintaan dari asal ini
 }));
 
 // Menganalisis permintaan JSON yang masuk

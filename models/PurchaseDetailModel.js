@@ -1,11 +1,9 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, DataTypes } from "sequelize";
 import db from "../config/Database.js";
 import Purchases from "./PurchaseModel.js"; // Import model "Purchases"
 import Products from "./ProductModel.js"; // Import model "Products"
 
-const { DataTypes } = Sequelize;
-
-const PurchaseDetails = db.define('purchaseDetails', {
+const PurchaseDetails = db.define('purchasedetails', {
     purchaseDetailId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -59,13 +57,13 @@ const PurchaseDetails = db.define('purchaseDetails', {
     freezeTableName: true
 });
 
-// Tambahkan hook beforeValidate
-PurchaseDetails.beforeValidate((purchaseDetail, options) => {
+// Tambahkan hook beforeValidate dengan fungsi asynchronous
+PurchaseDetails.beforeValidate(async (purchaseDetail, options) => {
     console.log("Memvalidasi data detail pembelian...");
 });
 
-// Tambahkan hook afterValidate
-PurchaseDetails.afterValidate((purchaseDetail, options) => {
+// Tambahkan hook afterValidate dengan fungsi asynchronous
+PurchaseDetails.afterValidate(async (purchaseDetail, options) => {
     console.log("Validasi data detail pembelian selesai.");
 });
 
