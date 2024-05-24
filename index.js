@@ -4,6 +4,7 @@ import session from "express-session";
 import dotenv from "dotenv";
 import db from "./config/Database.js";
 import SequelizeStore from "connect-session-sequelize";
+
 import roleRoute from "./routes/RoleRoute.js";
 import userRoute from "./routes/UserRoute.js";
 import productRoute from "./routes/ProductRoute.js";
@@ -15,9 +16,18 @@ import supplierRoute from "./routes/SupplierRoute.js";
 import purchaseRoute from "./routes/PurchaseRoute.js";
 import purchaseDetailRoute from "./routes/PurchaseDetailRoute.js";
 import authRoute from "./routes/AuthRoute.js";
-import seedUsers from "./seeders/UserSeeder.js";
-import seedRoles from "./seeders/RoleSeeder.js";
-import seedCustomers from "./seeders/CustomerSeeder.js";
+
+import seedCustomer from "./seeders/CustomerSeeder.js";
+import seedInventoryTransaction from "./seeders/InventoryTransactionSeeder.js";
+import seedOrder from "./seeders/OrderSeeder.js";
+import seedOrderDetail from "./seeders/OrderDetailSeeder.js";
+import seedProduct from "./seeders/ProductSeeder.js";
+import seedPurchase from "./seeders/PurchaseSeeder.js";
+import seedPurchaseDetail from "./seeders/PurchaseDetailSeeder.js";
+import seedSupplier from "./seeders/SupplierSeeder.js";
+import seedUser from "./seeders/UserSeeder.js";
+import seedRole from "./seeders/RoleSeeder.js";
+
 
 // Mengimpor library dan modul yang diperlukan
 console.log('Memuat library dan modul yang diperlukan...');
@@ -61,7 +71,7 @@ app.use(session({
 console.log('Mengaktifkan CORS...');
 app.use(cors({
     credentials: true, // Menyertakan cookie dalam permintaan CORS
-    origin: ['http://localhost:3000','http://localhost:5173'] // Mengizinkan permintaan dari asal ini
+    origin: ['http://localhost:3000', 'http://localhost:5173'] // Mengizinkan permintaan dari asal ini
 }));
 
 // Menganalisis permintaan JSON yang masuk
@@ -118,17 +128,43 @@ app.get('/', (req, res) => {
     res.send('Hello, world!'); // Send a response when accessing the root route
 });
 
+// Mengaktifkan sinkronisasi database dengan opsi { force: true } untuk menciptakan kembali tabel (gunakan dengan hati-hati, ini akan menghapus semua data yang ada)
+console.log('Mengaktifkan sinkronisasi database...');
 db.sync({ force: true }).then(async () => {
-    console.log('Tabel berhasil dibuat.');
     try {
-        // Panggil fungsi seedUsers dan seedRoles sebelum server dimulai
-        console.log('Menjalankan seeder roles...');
-        await seedRoles();
-        console.log('Menjalankan seeder users...');
-        await seedUsers();
-        console.log('Menjalankan seeder customers...');
-        await seedCustomers();
-    
+        console.log('Tabel berhasil dibuat.'); // Menampilkan pesan jika tabel berhasil dibuat
+
+        // Panggil seeder dalam urutan yang benar
+        console.log('Menjalankan seeder produk...');
+        await seedProduct();
+
+        console.log('Menjalankan seeder pelanggan...');
+        await seedCustomer();
+
+        console.log('Menjalankan seeder pemasok...');
+        await seedSupplier();
+
+        console.log('Menjalankan seeder transaksi inventaris...');
+        await seedInventoryTransaction();
+
+        console.log('Menjalankan seeder peran...');
+        await seedRole();
+
+        console.log('Menjalankan seeder pengguna...');
+        await seedUser();
+
+        console.log('Menjalankan seeder pembelian...');
+        await seedPurchase();
+
+        console.log('Menjalankan seeder pesanan...');
+        await seedOrder();
+
+        console.log('Menjalankan seeder detail pesanan...');
+        await seedOrderDetail();
+
+        console.log('Menjalankan seeder detail pembelian...');
+        await seedPurchaseDetail();
+
         app.listen(process.env.APP_PORT, () => {
             console.log('Server up and running...');
         });
@@ -136,5 +172,5 @@ db.sync({ force: true }).then(async () => {
         console.error('Gagal menjalankan seeder:', error);
     }
 }).catch(err => {
-    console.error('Gagal membuat tabel:', err);
+    console.error('Gagal membuat tabel:', err); // Menampilkan pesan kesalahan jika gagal membuat tabel
 });

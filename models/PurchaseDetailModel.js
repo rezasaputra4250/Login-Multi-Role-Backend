@@ -57,6 +57,10 @@ const PurchaseDetails = db.define('purchasedetails', {
     freezeTableName: true
 });
 
+// Definisikan hubungan antara PurchaseDetails dengan Purchases dan Products
+PurchaseDetails.belongsTo(Purchases, { foreignKey: 'purchaseId' });
+PurchaseDetails.belongsTo(Products, { foreignKey: 'productId' });
+
 // Tambahkan hook beforeValidate dengan fungsi asynchronous
 PurchaseDetails.beforeValidate(async (purchaseDetail, options) => {
     console.log("Memvalidasi data detail pembelian...");

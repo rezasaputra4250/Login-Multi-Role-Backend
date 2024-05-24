@@ -10,6 +10,17 @@ export const getOrders = async (req, res) => {
     }
 };
 
+export const getOrdersWithCustomers = async (req, res) => {
+    try {
+        const orders = await Orders.findAll({
+            include: Customers // Include Customers model to join the data
+        });
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // Mendapatkan pesanan berdasarkan ID
 export const getOrderById = async (req, res) => {
     const { id } = req.params;
